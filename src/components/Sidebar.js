@@ -128,7 +128,7 @@ export default function Sidebar() {
               <div className="text-sm font-semibold text-slate-200">
                 {usuario?.nome || "Usuário"}
               </div>
-              <div className="text-xs text-slate-600">Administrador</div>
+              <div className="text-xs text-slate-600">Logado</div>
             </div>
           </div>
           <button
