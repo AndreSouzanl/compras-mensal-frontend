@@ -9,10 +9,10 @@ import { useState, useEffect } from "react";
 
 const menuItems = [
   { icon: "📊", label: "Dashboard", href: "/dashboard" },
-  { icon: "🛍️", label: "Lista de Compras", href: "/dashboard/lista" },
-  { icon: "📦", label: "Produtos", href: "/dashboard/produtos" },
-  { icon: "📈", label: "Histórico", href: "/dashboard/historico" },
-  { icon: "⚙️", label: "Configurações", href: "/dashboard/configuracoes" },
+  // { icon: "🛍️", label: "Lista de Compras", href: "/dashboard/lista" },
+  // { icon: "📦", label: "Produtos", href: "/dashboard/produtos" },
+  // { icon: "📈", label: "Histórico", href: "/dashboard/historico" },
+  // { icon: "⚙️", label: "Configurações", href: "/dashboard/configuracoes" },
 ];
 
 export default function Sidebar() {
@@ -96,9 +96,9 @@ export default function Sidebar() {
             </Link>
           ))}
 
-          <div className="text-xs font-bold text-slate-700 uppercase tracking-widest px-2 mb-2 mt-5">
+          {/* <div className="text-xs font-bold text-slate-700 uppercase tracking-widest px-2 mb-2 mt-5">
             Relatórios
-          </div>
+          </div> */}
           {menuItems.slice(3).map((item) => (
             <Link
               key={item.href}
