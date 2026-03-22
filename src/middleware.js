@@ -4,6 +4,12 @@ export function middleware(request) {
   const token = request.cookies.get("token")?.value
   const isAuthPage = request.nextUrl.pathname.startsWith("/login")
   const isDashboard = request.nextUrl.pathname.startsWith("/dashboard")
+  const isResetPage = request.nextUrl.pathname.startsWith("/reset-password")
+
+  // reset-password sempre deixa passar
+  if (isResetPage) {
+    return NextResponse.next()
+  }
 
   // se tentar acessar dashboard sem token → redireciona para login
   if (isDashboard && !token) {
@@ -19,5 +25,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"],
+  matcher: ["/dashboard/:path*", "/login", "/reset-password"],
 }

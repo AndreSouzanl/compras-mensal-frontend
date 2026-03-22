@@ -3,6 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
   const [erro, setErro] = useState("")
@@ -18,10 +20,25 @@ export default function ForgotPasswordPage() {
     setLoading(true)
     setErro("")
 
-    // Simulação — futuramente integrar com API de email
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setSucesso(true)
-    setLoading(false)
+    try {
+      const res = await fetch(`${BASE_URL}/reset/solicitar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        setSucesso(true)
+      } else {
+        setErro(data.mensagem || "Erro ao enviar email!")
+      }
+    } catch (error) {
+      setErro("Erro ao conectar com o servidor!")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -45,7 +62,6 @@ export default function ForgotPasswordPage() {
 
         {!sucesso ? (
           <>
-            {/* HEADING */}
             <div className="text-center mb-7">
               <h2 className="text-2xl font-bold text-slate-100">Esqueceu a senha? 🔑</h2>
               <p className="text-slate-500 text-sm mt-2">
@@ -55,14 +71,12 @@ export default function ForgotPasswordPage() {
 
             <div className="h-px bg-slate-800 mb-7" />
 
-            {/* ERRO */}
             {erro && (
               <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm px-4 py-3 rounded-xl mb-5">
                 ⚠️ {erro}
               </div>
             )}
 
-            {/* EMAIL */}
             <div className="mb-6">
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                 E-mail cadastrado
@@ -79,7 +93,6 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
 
-            {/* BOTÃO */}
             <button
               onClick={handleEnviar}
               disabled={loading}
@@ -89,15 +102,12 @@ export default function ForgotPasswordPage() {
             </button>
           </>
         ) : (
-          /* SUCESSO */
           <div className="text-center">
             <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl mx-auto mb-5">
               📬
             </div>
             <h2 className="text-xl font-bold text-slate-100 mb-2">E-mail enviado!</h2>
-            <p className="text-slate-500 text-sm mb-2">
-              Enviamos as instruções para:
-            </p>
+            <p className="text-slate-500 text-sm mb-2">Enviamos as instruções para:</p>
             <p className="text-indigo-400 font-semibold text-sm mb-6">{email}</p>
             <p className="text-slate-600 text-xs mb-8">
               Não recebeu? Verifique sua caixa de spam ou tente novamente.
@@ -111,7 +121,6 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        {/* LINK VOLTAR */}
         <p className="text-center text-sm text-slate-500 mt-6">
           <Link href="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
             ← Voltar para o login
